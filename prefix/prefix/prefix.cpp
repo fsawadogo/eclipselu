@@ -40,8 +40,9 @@ void init()
 
 void dp()
 {
-	int i,j,len = s.length();
+	int i,j,k,len = s.length();
 	int plen;
+	bool tag;
 	memset(f,false,sizeof(f));
 	f[0] = true;
 	for (i=1;i<=len;i++)
@@ -49,9 +50,17 @@ void dp()
 		for (j=0;j<n;j++)
 		{
 			plen = prim[j].len;
-			if (i>=plen&&s.substr(i-plen,plen)==prim[j].str)
+			tag = true;
+			if (i>=plen)
 			{
-				f[i] = f[i]||f[i-plen];
+				for (k=0;k<plen;k++)
+					if (s[i-plen+k]!=prim[j].str[k])
+					{
+						tag = false;
+						break;
+					}
+				if(tag)
+					f[i] = f[i]||f[i-plen];
 				if (f[i]&&i>maxlen)
 					maxlen = i;
 			}
