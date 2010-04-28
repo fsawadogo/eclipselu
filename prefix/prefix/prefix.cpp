@@ -18,13 +18,15 @@ struct node
 };
 node prim[201];
 int n;
+int maxlen;
 string s;
-int f[200001];
+bool f[200001];
 
 void init()
 {
 	string temp;
 	n=0;
+	maxlen=0;
 	while(cin>>prim[n].str&&prim[n].str!=".")
 	{
 		prim[n].len = prim[n].str.length();
@@ -39,19 +41,23 @@ void init()
 void dp()
 {
 	int i,j,len = s.length();
-	int off;
-	memset(f,0,sizeof(f));
-
-	for (i=len;i>=0;i--)
+	int plen;
+	memset(f,false,sizeof(f));
+	f[0] = true;
+	for (i=1;i<=len;i++)
 	{
 		for (j=0;j<n;j++)
 		{
-			off = i-prim[j].len;
-			if (off>=0&&s.substr(off,prim[j].len)==prim[j].str)
-				f[off] = max(prim[j].len + f[i], f[off]);
+			plen = prim[j].len;
+			if (i>=plen&&s.substr(i-plen,plen)==prim[j].str)
+			{
+				f[i] = f[i]||f[i-plen];
+				if (f[i]&&i>maxlen)
+					maxlen = i;
+			}
 		}
 	}
-	cout<<f[0]<<endl;
+	cout<<maxlen<<endl;
 }
 
 int main()
