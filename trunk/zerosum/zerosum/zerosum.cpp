@@ -13,33 +13,34 @@ using namespace std;
 
 int n;
 
-int cal(char exp[])
+int cal(char *s)			//nice evaluation
 {
-	int i,len = strlen(exp);
-	int sum = 0,op;
-	char oprt = '+';
-	i=0;
-	while(i<len)
-	{
-		op=0;
-		while(i<len&&exp[i]!='+'&&exp[i]!='-')
-		{
-			if (isdigit(exp[i]))
-				op = op*10+exp[i]-'0';
-			i++;
-		}				
-		if (oprt=='+')
-			sum+=op;
-		else
-			sum-=op;
-		if (exp[i]=='+'||exp[i]=='-')
-			oprt=exp[i];
-		i++;
+	int term, sign, sum;
+	char *p;
+
+	sign = 1;
+	term = 0;
+	sum = 0;
+	for(p=s; *p; p++) {
+		switch(*p){
+		case '+':
+		case '-':
+			sum += sign*term;
+			term = 0;
+			sign = *p == '+' ? 1 : -1;
+			break;
+		case ' ':
+			break;
+		default:    /* digit */
+			term = term*10 + *p-'0';
+		}
 	}
+	sum += sign*term;
 	return sum;
 }
 
-void dfs(int depth,char exp[])
+
+void dfs(int depth,char exp[])		//generating all possible expressions
 {
     char str[20];
 	int len;
@@ -55,11 +56,11 @@ void dfs(int depth,char exp[])
 		str[len]=' ';
 		str[len+1]='0'+depth+2;
 		str[len+2]='\0';
-		dfs(depth+1,str);
+		dfs(depth+1,str);		//' '
 		str[len]='+';
-		dfs(depth+1,str);
+		dfs(depth+1,str);       //'+'
 		str[len]='-';
-		dfs(depth+1,str);		
+		dfs(depth+1,str);		//'-'
 	}
 }
 
