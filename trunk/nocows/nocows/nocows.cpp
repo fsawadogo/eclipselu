@@ -8,7 +8,7 @@ LANG: C++
 #include <cstring>
 
 int n,k;
-long f[201][101];
+long f[101][201];
 
 void init()
 {
@@ -20,13 +20,13 @@ void dp()
 {
 	int i,j,l;
 	for (i=1;i<=k;i++)
-		f[1][i] = 1;
-	for (j=1;j<=k;j++)
-		for (i=1;i<=n;i+=2)
-			for (l=1;l<=i-2;l++)
+		f[i][1] = 1;
+	for (i=1;i<=k;i++)
+		for (j=1;j<=n;j+=2)
+			for (l=1;l<=j-2;l++)
 			{
-				f[i][j]+=f[l][j-1]*f[i-1-l][j-1];
-				f[i][j]%=9901;
+				f[i][j]+=f[i-1][l]*f[i-1][j-1-l];
+				f[i][j]%=9901;			//mod 9901 in case of overflow
 			}
 }
 
@@ -36,6 +36,7 @@ int main()
 	freopen("nocows.out","w",stdout);
 	init();
 	dp();
-	printf("%ld\n",(f[n][k]-f[n][k-1]+9901)%9901);
+	//f[k-1][n] could be greater than f[k][n]
+	printf("%ld\n",(f[k][n]-f[k-1][n]+9901)%9901);	
 	return 0;
 }
