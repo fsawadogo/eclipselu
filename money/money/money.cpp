@@ -9,9 +9,11 @@ LANG: C++
 
 int v,n;
 int t[26];		//money system
-long long f[26][10001];	
+long long f[10001];	
 
-void init()
+//input may contain duplicate coin types
+//so you may need to optimize init subroutine
+void init()		
 {
 	int i;
 	scanf("%d%d",&v,&n);
@@ -20,16 +22,16 @@ void init()
 	memset(f,0,sizeof(f));
 }
 
-void dp()
+void dp()	//two dimensional dp will get time limit exceeded
 {
-	int i,j,k;
-	for (i=0;i<=v;i++)
-		f[i][0]=1;
-	for (i=1;i<=v;i++)
-		for (j=1;j<=n;j++)
-			for (k=0;k<=j/t[i];k++)
-				f[i][j]+=f[i-1][j-k*t[i]];
-	printf("%lld\n",f[v][n]);
+	int i,j;
+	for (i=0;i*t[1]<=n;i++)
+		f[i*t[1]]=1;
+	for (i=2;i<=v;i++)
+		for (j=0;j<=n;j++)
+			if (j-t[i]>=0)
+				f[j]+=f[j-t[i]];
+	printf("%lld\n",f[n]);
 }
 
 int main()
