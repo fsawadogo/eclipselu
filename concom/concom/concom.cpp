@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 ID: eclipse5
 PROG: concom
 LANG: C++
@@ -34,15 +34,15 @@ void update(int a,int b)
 {
 	int k;
 	con[a][b] = true;
-	for (k=1;k<maxn;k++)			//°Ñb¿Ø¹ÉµÄ¹«Ë¾kµÄ¹É·Ý¼ÓÈëµ½a¿Ø¹ÉµÄk¹«Ë¾µÄ¹É·ÝÖÐ
+	for (k=1;k<maxn;k++)			//æŠŠbæŽ§è‚¡çš„å…¬å¸kçš„è‚¡ä»½åŠ å…¥åˆ°aæŽ§è‚¡çš„kå…¬å¸çš„è‚¡ä»½ä¸­
 		c[a][k]+=c[b][k];
-	for (k=1;k<maxn;k++)			//±ä¸üºóÈç¹ûa¿Ø¹Ék>50 ÄÇÃ´a¿ØÖÆk¹«Ë¾ ×÷ÏàÓ¦±ä¸ü
+	for (k=1;k<maxn;k++)			//å˜æ›´åŽå¦‚æžœaæŽ§è‚¡k>50 é‚£ä¹ˆaæŽ§åˆ¶kå…¬å¸ ä½œç›¸åº”å˜æ›´
 		if (c[a][k]>50&&!con[a][k])
 			update(a,k);
-	for (k=1;k<maxn;k++)			//k¿ØÖÆa a¿ØÖÆb Ôòk¿ØÖÆb
+	for (k=1;k<maxn;k++)			//kæŽ§åˆ¶a aæŽ§åˆ¶b åˆ™kæŽ§åˆ¶b
 		if (con[k][a]&&!con[k][b])
 			update(k,b);
-	for (k=1;k<=maxn;k++)			//b¿ØÖÆk a¿ØÖÆb Ôòa¿ØÖÆk
+	for (k=1;k<=maxn;k++)			//bæŽ§åˆ¶k aæŽ§åˆ¶b åˆ™aæŽ§åˆ¶k
 		if (con[b][k]&&!con[a][k])
 			update(a,k);
 }
