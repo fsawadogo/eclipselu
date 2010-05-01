@@ -34,15 +34,15 @@ void update(int a,int b)
 {
 	int k;
 	con[a][b] = true;
-	for (k=1;k<maxn;k++)
+	for (k=1;k<maxn;k++)			//把b控股的公司k的股份加入到a控股的k公司的股份中
 		c[a][k]+=c[b][k];
-	for (k=1;k<maxn;k++)
+	for (k=1;k<maxn;k++)			//变更后如果a控股k>50 那么a控制k公司 作相应变更
 		if (c[a][k]>50&&!con[a][k])
 			update(a,k);
-	for (k=1;k<maxn;k++)
+	for (k=1;k<maxn;k++)			//k控制a a控制b 则k控制b
 		if (con[k][a]&&!con[k][b])
 			update(k,b);
-	for (k=1;k<=maxn;k++)
+	for (k=1;k<=maxn;k++)			//b控制k a控制b 则a控制k
 		if (con[b][k]&&!con[a][k])
 			update(a,k);
 }
