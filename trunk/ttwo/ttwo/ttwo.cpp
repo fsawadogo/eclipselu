@@ -10,7 +10,6 @@ LANG: C++
 char grid[10][10];
 int fx,fy,cx,cy;
 int dir[4][2] = {{-1,0},{0,1},{1,0},{0,-1}};
-char nwse[5] = "NESW";
 
 void init()
 {
@@ -53,20 +52,17 @@ void solve()
 	int count = 0;
 	int cx1=cx,cy1=cy,fx1=fx,fy1=fy;
 	int dc=0,df=0;
-	while(cx1!=fx1||cy1!=fy1)
+						
+	while(count<160000&&(cx1!=fx1||cy1!=fy1))     //100 places,4 directions 400*400 different combinations
 	{
-		//printf("cow:(%d,%d)%c farmer:(%d,%d)%c\n",cx1,cy1,nwse[dc],fx1,fy1,nwse[df]);
 		move(cx1,cy1,dc);
 		move(fx1,fy1,df);		
-		count++;
-		if (count>20000)
-			break;
+		count++;		
 	}
-	//printf("cow:(%d,%d)%c farmer:(%d,%d)%c\n",cx1,cy1,nwse[dc],fx1,fy1,nwse[df]);
-	if (count>20000)
-		printf("0\n");
-	else
+	if (cx1==fx1&&cy1==fy1)
 		printf("%d\n",count);
+	else
+		printf("0\n");
 }
 
 int main()
