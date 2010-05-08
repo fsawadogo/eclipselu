@@ -15,10 +15,10 @@ const int infinity = 99999999;
 
 int w,h;
 char maze[2*100+1][2*38+1];		//算法中使用的坐标(x,y)对应maze中的坐标(2*x+1,2*y+1)
-int exits[2][2],ecnt=0;
-int dist1[100][38];
-int dist2[100][38];
-int dir[4][2] = {{-1,0},{0,1},{1,0},{0,-1}};
+int exits[2][2],ecnt=0;       //两个出口的位置
+int dist1[100][38];           //exit[0]到达各个节点的最短路径
+int dist2[100][38];           //exit[1]到达各个节点的最短路径
+int dir[4][2] = {{-1,0},{0,1},{1,0},{0,-1}};  //NWSE
 
 bool isexit(int i,int j,int d)		//判断是否为出口
 {
