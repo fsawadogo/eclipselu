@@ -1,4 +1,4 @@
-/*
+﻿/*
 ID: eclipse5
 PROG: maze1
 LANG: C++
@@ -14,13 +14,13 @@ using namespace std;
 const int infinity = 99999999;
 
 int w,h;
-char maze[2*100+1][2*38+1];
+char maze[2*100+1][2*38+1];		//算法中使用的坐标(x,y)对应maze中的坐标(2*x+1,2*y+1)
 int exits[2][2],ecnt=0;
 int dist1[100][38];
 int dist2[100][38];
-int dir[4][2] = {{-1,0},{0,1},{1,0},{0,-1}};   
+int dir[4][2] = {{-1,0},{0,1},{1,0},{0,-1}};
 
-bool isexit(int i,int j,int d)
+bool isexit(int i,int j,int d)		//判断是否为出口
 {
 	switch(d)
 	{
@@ -32,7 +32,7 @@ bool isexit(int i,int j,int d)
 	return false;
 }
 
-void init()		//input data and create graph
+void init()		//建图(用隐含的条件)，找出两个出口坐标
 {
 	int i,j,k;
 	int x,y;
@@ -41,7 +41,7 @@ void init()		//input data and create graph
 	{
 		for (j=0;j<w*2+1;j++)
 			maze[i][j]=getchar();
-		getchar();
+		while(getchar()!='\n');
 	}
 	for (i=0;i<h;i++)
 		for (j=0;j<w;j++)
@@ -56,7 +56,7 @@ void init()		//input data and create graph
 					exits[ecnt][0]=i;
 					exits[ecnt][1]=j;
 					ecnt++;
-					used=true;											
+					used=true;
 				}
 			}
 		}
@@ -88,27 +88,27 @@ void dijkstra(int srcx, int srcy,int distance[100][38])
 			distance[i][j]=infinity;
 			visited[i][j]=false;
 		}
-	distance[srcx][srcy]=0;
+		distance[srcx][srcy]=0;
 
-	for (i=0;i<h;i++)
-		for (j=0;j<w;j++)
-		{
-			getmin(x,y,distance,visited);
-			visited[x][y]=true;
-			for (k=0;k<4;k++)
+		for (i=0;i<h;i++)
+			for (j=0;j<w;j++)
 			{
-				x1=2*x+1+dir[k][0];
-				y1=2*y+1+dir[k][1];
-				if (x1>=0&&x1<2*h+1&&y1>=0&&y1<2*w+1)	//û�ڱ߽���
-					if (maze[x1][y1]==' ') //��ͨ
+				getmin(x,y,distance,visited);
+				visited[x][y]=true;
+				for (k=0;k<4;k++)
+				{
+					x1=2*x+1+dir[k][0];
+					y1=2*y+1+dir[k][1];
+					if (maze[x1][y1]==' ') //相通
 					{
 						x1=x+dir[k][0];
 						y1=y+dir[k][1];
-						if (!visited[x1][y1]&&distance[x][y]+1<distance[x1][y1])
-							distance[x1][y1]=distance[x][y]+1;
-					}	
+						if (x1>=0&&x1<h&&y1>=0&&y1<w)		//在迷宫范围内
+							if (!visited[x1][y1]&&distance[x][y]+1<distance[x1][y1])
+								distance[x1][y1]=distance[x][y]+1;
+					}
+				}
 			}
-		}	
 }
 
 void solve()
@@ -123,7 +123,7 @@ void solve()
 			d=min(dist1[i][j],dist2[i][j]);
 			if (d<infinity&&d>ans) ans=d;
 		}
-	printf("%d\n",ans+1);
+		printf("%d\n",ans+1);
 }
 
 int main()
