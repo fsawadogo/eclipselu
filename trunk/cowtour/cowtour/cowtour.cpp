@@ -4,6 +4,15 @@ PROG: cowtour
 LANG: C++
 */
 
+/*
+ *Cow Tour
+ *1.Floyd-Warshall
+ *2.计算连通分支
+ *3.加一条边(i,j), i,j分别在连通分支A,B, 计算新生成的连通分支的diameter
+ *newdiameter = max(diameterA,diameterB,mdist[i]+mdist[j]+len(i,j))
+ *mdist[i]表示和i连通的最远的点的最短路径的距离
+ */
+
 #include <cstdio>
 #include <cmath>
 #include <cstring>
