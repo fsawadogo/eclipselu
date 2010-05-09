@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 ID: eclipse5
 PROG: cowtour
 LANG: C++
@@ -7,10 +7,10 @@ LANG: C++
 /*
  *Cow Tour
  *1.Floyd-Warshall
- *2.¼ÆËãÁ¬Í¨·ÖÖ§
- *3.¼ÓÒ»Ìõ±ß(i,j), i,j·Ö±ğÔÚÁ¬Í¨·ÖÖ§A,B, ¼ÆËãĞÂÉú³ÉµÄÁ¬Í¨·ÖÖ§µÄdiameter
+ *2.è®¡ç®—è¿é€šåˆ†æ”¯
+ *3.åŠ ä¸€æ¡è¾¹(i,j), i,jåˆ†åˆ«åœ¨è¿é€šåˆ†æ”¯A,B, è®¡ç®—æ–°ç”Ÿæˆçš„è¿é€šåˆ†æ”¯çš„diameter
  *newdiameter = max(diameterA,diameterB,mdist[i]+mdist[j]+len(i,j))
- *mdist[i]±íÊ¾ºÍiÁ¬Í¨µÄ×îÔ¶µÄµãµÄ×î¶ÌÂ·¾¶µÄ¾àÀë
+ *mdist[i]è¡¨ç¤ºå’Œiè¿é€šçš„æœ€è¿œçš„ç‚¹çš„æœ€çŸ­è·¯å¾„çš„è·ç¦»
  */
 
 #include <cstdio>
