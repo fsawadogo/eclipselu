@@ -1,17 +1,8 @@
-﻿/*
+/*
 ID: eclipse5
 PROG: cowtour
 LANG: C++
 */
-
-/*
- *Cow Tour
- *1.Floyd-Warshall
- *2.计算连通分支
- *3.加一条边(i,j), i,j分别在连通分支A,B, 计算新生成的连通分支的diameter
- *newdiameter = max(diameterA,diameterB,mdist[i]+mdist[j]+len(i,j))
- *mdist[i]表示和i连通的最远的点的最短路径的距离
- */
 
 #include <cstdio>
 #include <cmath>
@@ -27,15 +18,22 @@ struct node
 {
 	double x,y;
 };
-node arr[maxn];
-char matrix[maxn][maxn];
-double d[maxn][maxn];
-double maxcdist[maxn];
-int n;
+node arr[maxn];		//nodes
+int father[maxn];	//disjoint set
+char matrix[maxn][maxn];	//adjacent matrix
+double d[maxn][maxn];		//shortest path length
+int n;					
 
-inline double len(double x,double y)
+inline double len(int i,int j)	//calculate length
 {
-	return sqrt(x*x+y*y);
+	return sqrt((arr[i].x-arr[j].x)*(arr[i].x-arr[j].x)+(arr[i].y-arr[j].y)*(arr[i].y-arr[j].y));
+}
+
+int getfather(int k)
+{
+	if (father[k]==k) return k;
+	father[k] = getfather(father[k]);
+	return father[k];
 }
 
 void init()
@@ -50,6 +48,7 @@ void init()
 		for (j=0;j<n;j++)
 			matrix[i][j]=getchar();
 		getchar();
+		father[i]=i;
 	}
 	
 	for (i=0;i<n;i++)
@@ -61,10 +60,14 @@ void init()
 	for (i=0;i<n;i++)
 		for (j=i+1;j<n;j++)
 			if (matrix[i][j]=='1')
-				d[i][j]=d[j][i]=len(arr[i].x-arr[j].x,arr[i].y-arr[j].y);			
+			{
+				d[i][j]=d[j][i]=len(i,j);			
+				if (getfather(i)!=getfather(j))
+					father[getfather(i)]=getfather(j);
+			}
 }
 
-void floyd()
+void floyd()		//Floyd-Warshall
 {
 	int i,j,k;
 		
@@ -78,26 +81,36 @@ void floyd()
 void solve()
 {
 	int i,j;
-	double temp,ans=infinity;
-	for (i=0;i<n;i++)
-		maxcdist[i]=0;
-
+	double temp1,temp2,newdiam,ans=infinity;
+	double mdist[maxn];	//mdist[i]: max length of shortest path len of (i,j), j is connected to i
+	double diam[maxn];		//diam[i]: diameters of all connected components, component number is the 
+							//father of the disjoint set
+	for (i=0;i<n;i++)	
+	{
+		mdist[i]=0;
+		diam[i]=-1;
+	}
 	for (i=0;i<n;i++)
 		for (j=0;j<n;j++)
-			if (d[i][j]!=infinity&&d[i][j]>maxcdist[i])
-				maxcdist[i]=d[i][j];
+			if (d[i][j]!=infinity&&d[i][j]>mdist[i])
+			{
+				mdist[i]=d[i][j];
+				if (mdist[i]>diam[getfather(i)])
+					diam[getfather(i)]=mdist[i];
+			}
 
+	//newdiam = max(len(i,j)+mdist[i]+mdist[j],diam[compno(i)],diam[compno(j)])
+	//compno==getfather
 	for (i=0;i<n;i++)
 		for (j=0;j<n;j++)
 			if (d[i][j]==infinity)
 			{
-				temp = len(arr[i].x-arr[j].x,arr[i].y-arr[j].y)+maxcdist[i]+maxcdist[j];
-				if (temp<ans)
-					ans = temp;
-			}
-	for (i=0;i<n;i++)
-		if (ans<maxcdist[i])
-			ans = maxcdist[i];
+				temp1 = len(i,j)+mdist[i]+mdist[j];
+				temp2 = max(diam[getfather(i)],diam[getfather(j)]);
+				newdiam = max(temp1,temp2);
+				if (newdiam<ans)
+					ans = newdiam;
+			}	
 	printf("%.6lf\n",ans);
 }
 
